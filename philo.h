@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/01/28 15:32:22 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:05:22 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,6 @@
 # include <pthread.h>
 # include <sys/time.h>
 
-/*		allowed:
-	memset printf write
-	malloc free
-	usleep gettimeofday
-	pthread_create pthread_join pthread_detach
-	pthread_mutex_init pthread_mutex_destroy
-	pthread_mutex_lock pthread_mutex_unlock
-*/
-
 typedef struct s_data
 {
 	int		life_time;
@@ -37,26 +28,40 @@ typedef struct s_data
 	int		min_meals;
 }	t_data;
 
+typedef struct s_philo t_philo;
+
 // state: 0-sleep 1-eat 2-think
-typedef struct s_philo
+struct s_philo
 {
 	t_data		*data;
 	pthread_t	id;
 	int			name;
+	t_philo		*left;
+	t_philo		*right;
 	int			life;
 	int			state;
-	int			left;
-	int			right;
-}	t_philo;
+	int			meals;
+};
 
-// init
+// init:
+
 int		ft_error(char *str, t_philo **phil);
 int		check_args(int argc, char **argv);
-t_philo	**get_phil(int life, int count);
-void	get_data(int argc, char **argv, t_philo **phil);
-void	print_philo(t_philo **phil);
+t_data	*get_data(int argc, char **argv);
+void	*live(void *param);
 
-// libft
+// t_philo funcs:
+
+t_philo	*create_table(int count, t_data *data);
+void	add_to_table(t_philo **phil, t_philo *new);
+t_philo	*new_philo(int name, t_data *data);
+int		tablesize(t_philo *phil);
+t_philo	*highest(t_philo *phil);
+void	print_table(t_philo *phil);
+void	free_philo(t_philo **phil);
+
+// libft:
+
 void	*free_all(void **x);
 int		ft_atoi(const char *str);
 

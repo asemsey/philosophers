@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:26:38 by asemsey           #+#    #+#             */
-/*   Updated: 2024/01/28 15:31:07 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:09:27 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,38 @@ int	ft_error(char *str, t_philo **phil)
 	return (EXIT_FAILURE);
 }
 
-// [number_of_philosophers]  [time_to_die]  [time_to_eat]  [time_to_sleep]
-// optional: [number_of_times_each_philosopher_must_eat]
+// create, detach and join threads
+void	start_threads(t_philo **phil)
+{
+	t_philo	*head;
+
+	head = *phil;
+	while (*phil)
+	{
+		pthread_create(&(*phil)->id, NULL, live, (void *)*phil);
+		pthread_detach((*phil)->id);
+		if ((*phil)->right == head)
+			break ;
+		*phil = (*phil)->right;
+	}
+	*phil = head;
+	while (1)
+		usleep(1000 * 10);
+}
+
+// 1:[number_of_philosophers]  2:[time_to_die]  3:[time_to_eat]  4:[time_to_sleep]
+// optional: 5:[number_of_times_each_philosopher_must_eat]
 int main(int argc, char **argv)
 {
-	int			i;
-	t_philo		**phil;
+	t_philo		*phil;
 
-	i = check_args(argc, argv);
-	if (i == 0)
+	if (check_args(argc, argv) == 0)
 		return (ft_error("invalid arguments", NULL));
-	phil = get_phil(ft_atoi(argv[2]), ft_atoi(argv[1]));
+	phil = create_table(ft_atoi(argv[1]), get_data(argc, argv));
 	if (!phil)
 		return (EXIT_FAILURE);
-	get_data(argc, argv, phil);
-	print_philo(phil);
+	print_table(phil);
+	start_threads(&phil);
 	return (0);
 }
 
