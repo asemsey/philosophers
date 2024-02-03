@@ -6,7 +6,25 @@ allowed functions:
 	pthread_mutex_init pthread_mutex_destroy
 	pthread_mutex_lock pthread_mutex_unlock
 
+make time unsigned long int???
+
 usleep(1000) == 1 millisecond
+1			second
+1.000		milliseconds
+1.000.000	microseconds
+
+state:		0-sleep 1-eat 2-think
+
+for testing stuff:
+	if (p->name == 2)
+	{
+		usleep(1000 * 1000 * 2);
+		eating(p);
+		usleep(1000 * 1000 * 2);
+	}
+	else
+		usleep(1000 * 1000 * 10);
+
 
 
 struct for array:

@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/01/29 17:05:22 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/03 10:41:00 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 typedef struct s_data
 {
+	time_t	start;
 	int		life_time;
 	int		eat_time;
 	int		sleep_time;
@@ -41,14 +42,17 @@ struct s_philo
 	int			life;
 	int			state;
 	int			meals;
+	long int	last_meal;
 };
 
 // init:
 
-int		ft_error(char *str, t_philo **phil);
-int		check_args(int argc, char **argv);
-t_data	*get_data(int argc, char **argv);
-void	*live(void *param);
+int			ft_error(char *str, t_philo **phil);
+int			check_args(int argc, char **argv);
+t_data		*get_data(int argc, char **argv);
+long int	get_start(void);
+long int	get_timestamp(long int start);
+void		*live(void *param);
 
 // t_philo funcs:
 

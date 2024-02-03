@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:26:38 by asemsey           #+#    #+#             */
-/*   Updated: 2024/01/29 17:09:27 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/03 09:57:46 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	start_threads(t_philo **phil)
 	t_philo	*head;
 
 	head = *phil;
+	(*phil)->data->start = get_start();
 	while (*phil)
 	{
 		pthread_create(&(*phil)->id, NULL, live, (void *)*phil);
