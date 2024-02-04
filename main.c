@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:26:38 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/03 09:57:46 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/04 10:40:13 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,3 @@ int main(int argc, char **argv)
 	start_threads(&phil);
 	return (0);
 }
-
-// pthread_create(&a, NULL, get_s, (void *)&c);
-// pthread_create(&b, NULL, get_v, (void *)&c);
-// pthread_join(a, NULL);
-// pthread_join(b, NULL);

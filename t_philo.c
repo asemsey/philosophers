@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_struct.c                                        :+:      :+:    :+:   */
+/*   t_philo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:35:16 by asemsey           #+#    #+#             */
-/*   Updated: 2024/01/29 15:55:26 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/04 10:38:27 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
-
-// struct s_philo
-// {
-// 	t_data		*data;
-// 	pthread_t	id;
-// 	int			name;
-// 	t_philo		*left;
-// 	t_philo		*right;
-// 	int			life;
-// 	int			state;
-// 	int			meals;
-// };
+#include "philo.h"
 
 // create the linked list of philosophers
 t_philo	*create_table(int count, t_data *data)
@@ -35,6 +23,8 @@ t_philo	*create_table(int count, t_data *data)
 	while (i <= count)
 		add_to_table(&p, new_philo(i++, data));
 	p->left = highest(p);
+	// all_forks(&p);
+	create_forks(&p);
 	return (p);
 }
 
@@ -106,50 +96,37 @@ t_philo	*highest(t_philo *phil)
 	return (phil);
 }
 
-// print info on all philosophers
+// print info on all philosophers, with forks
 void	print_table(t_philo *phil)
 {
 	if (!phil)
 		return ;
-	printf("left  name  right || state  life\n");
-	printf("--------------------------------\n");
+	printf("left  name  right || l_fork  r_fork\n");
+	printf("-----------------------------------\n");
 	while (phil)
 	{
 		printf("%d     %d     %d     || %d      %d\n", phil->left->name,\
-			phil->name, phil->right->name, phil->state, phil->data->life_time);
+			phil->name, phil->right->name, phil->l_fork->name, phil->r_fork->name);
 		if (phil == highest(phil))
 			break ;
 		phil = phil->right;
 	}
-	printf("--------------------------------\n");
+	printf("-----------------------------------\n");
 }
 
+// free_all for circular list, with t_data and t_fork
 void	free_philo(t_philo **phil)
 {
 	t_philo	*tmp;
 
+	if (!phil || !*phil)
+		return ;
+	free((*phil)->data);
 	while (*phil)
 	{
 		tmp = *phil;
 		*phil = (*phil)->right;
+		free(tmp->l_fork);
 		free(tmp);
 	}
 }
-
-// void	print_philo(t_philo **phil)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (!phil)
-// 		return ;
-// 	printf("left  name  right || state  life\n");
-// 	printf("--------------------------------\n");
-// 	while (phil[i])
-// 	{
-// 		printf("%d     %d     %d     || %d      %d\n", phil[i]->left,\
-// 			phil[i]->name, phil[i]->right, phil[i]->state, phil[i]->data->life_time);
-// 		i++;
-// 	}
-// 	printf("--------------------------------\n");
-// }

@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/03 10:41:00 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/04 10:23:29 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,13 @@ typedef struct s_data
 	int		min_meals;
 }	t_data;
 
-typedef struct s_philo t_philo;
+typedef struct s_fork
+{
+	pthread_mutex_t	mutex;
+	int				name;
+}	t_fork;
 
+typedef struct s_philo t_philo;
 // state: 0-sleep 1-eat 2-think
 struct s_philo
 {
@@ -39,6 +44,8 @@ struct s_philo
 	int			name;
 	t_philo		*left;
 	t_philo		*right;
+	t_fork		*l_fork;
+	t_fork		*r_fork;
 	int			life;
 	int			state;
 	int			meals;
@@ -56,17 +63,24 @@ void		*live(void *param);
 
 // t_philo funcs:
 
-t_philo	*create_table(int count, t_data *data);
-void	add_to_table(t_philo **phil, t_philo *new);
-t_philo	*new_philo(int name, t_data *data);
-int		tablesize(t_philo *phil);
-t_philo	*highest(t_philo *phil);
-void	print_table(t_philo *phil);
-void	free_philo(t_philo **phil);
+t_philo		*create_table(int count, t_data *data);
+void		add_to_table(t_philo **phil, t_philo *new);
+t_philo		*new_philo(int name, t_data *data);
+int			tablesize(t_philo *phil);
+t_philo		*highest(t_philo *phil);
+void		print_table(t_philo *phil);
+void		free_philo(t_philo **phil);
+
+// t_fork funcs
+
+void		create_forks(t_philo **phil);
+void		all_forks(t_philo **phil);
+void		add_fork(t_philo **phil, t_fork *new);
+t_fork		*new_fork(int name);
 
 // libft:
 
-void	*free_all(void **x);
-int		ft_atoi(const char *str);
+void		*free_all(void **x);
+int			ft_atoi(const char *str);
 
 #endif
