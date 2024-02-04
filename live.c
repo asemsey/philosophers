@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:09:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/03 10:49:46 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/04 11:56:26 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	*live(void *param)
 		eating(p);
 	}
 	printf("philosopher %d has died :(\n", p->name);
+	destroy_mutexes(&p);
+	// system("leaks philo");
 	exit(EXIT_SUCCESS);// death
 	return (NULL);
 }
@@ -72,9 +74,12 @@ void	eating(t_philo *phil)
 {
 	printf("%ld   %d is eating\n", get_timestamp(phil->data->start), phil->name);
 	phil->state = 1;
-	// take two forks (mutex)
 	usleep(1000 * phil->data->eat_time);
 	// return the forks
+	pthread_mutex_unlock(&(phil->l_fork->mutex));
+	phil->l_fork->locked = 0;
+	pthread_mutex_unlock(&(phil->r_fork->mutex));
+	phil->r_fork->locked = 0;
 	if (phil->data->min_meals && phil->meals >= phil->data->min_meals)
 	{
 		printf("%ld   %d has eaten %d meals\n", get_timestamp(phil->data->start), phil->name, phil->meals);
@@ -89,12 +94,20 @@ int	thinking(t_philo *phil)
 	phil->state = 2;
 	while (get_timestamp(phil->data->start) - phil->last_meal <= phil->data->life_time)
 	{
-		// 		keep checking if the forks are available
-		// if (forks_available)
-		// {
-		// 	return (1);
-		// 	// eat next!!!
-		// }
+		if (!phil->l_fork->locked)
+		{
+			pthread_mutex_lock(&(phil->l_fork->mutex));
+			printf("%ld   %d has taken a fork\n", get_timestamp(phil->data->start), phil->name);
+			phil->l_fork->locked = phil->name;
+		}
+		if (!phil->r_fork->locked)
+		{
+			pthread_mutex_lock(&(phil->r_fork->mutex));
+			printf("%ld   %d has taken a fork\n", get_timestamp(phil->data->start), phil->name);
+			phil->r_fork->locked = phil->name;
+		}
+		if (phil->l_fork->locked == phil->name && phil->r_fork->locked == phil->name)
+			return (1);
 		usleep(5);//????
 	}
 	// death:

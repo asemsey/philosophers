@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/04 10:23:29 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/04 11:44:08 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_data
 typedef struct s_fork
 {
 	pthread_mutex_t	mutex;
+	int				locked;
 	int				name;
 }	t_fork;
 
@@ -77,6 +78,8 @@ void		create_forks(t_philo **phil);
 void		all_forks(t_philo **phil);
 void		add_fork(t_philo **phil, t_fork *new);
 t_fork		*new_fork(int name);
+void		init_mutexes(t_philo **phil);
+void		destroy_mutexes(t_philo **phil);
 
 // libft:
 

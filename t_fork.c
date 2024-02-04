@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:23:39 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/04 10:37:24 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/04 11:44:36 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ t_fork	*new_fork(int name)
 	if (!fork)
 		return (NULL);
 	fork->name = name;
+	fork->locked = 0;
 	return (fork);
 }

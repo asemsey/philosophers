@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:29:02 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/04 10:34:05 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/04 11:26:13 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,41 @@ int	check_args(int argc, char **argv)
 		return (2);
 	}
 	return (1);
+}
+
+void	init_mutexes(t_philo **phil)
+{
+	t_philo	*p;
+
+	if (!phil || !*phil)
+		return ;
+	p = *phil;
+	while (*phil)
+	{
+		pthread_mutex_init(&((*phil)->r_fork->mutex), NULL);
+		*phil = (*phil)->right;
+		if (*phil == p)
+			break ;
+	}
+	*phil = p;
+}
+
+void	destroy_mutexes(t_philo **phil)
+{
+	t_philo	*p;
+
+	write(1, "destroy\n", 8);
+	if (!phil || !*phil)
+		return ;
+	p = *phil;
+	while (*phil)
+	{
+		pthread_mutex_destroy(&((*phil)->r_fork->mutex));
+		*phil = (*phil)->right;
+		if (*phil == p)
+			break ;
+	}
+	*phil = p;
 }
 
 t_data	*get_data(int argc, char **argv)
