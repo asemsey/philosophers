@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:26:38 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/04 11:22:00 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/04 12:34:30 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 	phil = create_table(ft_atoi(argv[1]), get_data(argc, argv));
 	if (!phil)
 		return (EXIT_FAILURE);
-	print_table(phil);
+	// print_table(phil);
 	start_threads(&phil);
 	return (0);
 }

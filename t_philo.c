@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:35:16 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/04 11:26:00 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/04 12:06:01 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,17 +101,17 @@ void	print_table(t_philo *phil)
 {
 	if (!phil)
 		return ;
-	printf("left  name  right || l_fork  r_fork\n");
-	printf("-----------------------------------\n");
+	printf("left  name  right || l_fork  r_fork || eaten  min meals\n");
+	printf("--------------------------------------------------\n");
 	while (phil)
 	{
-		printf("%d     %d     %d     || %d      %d\n", phil->left->name,\
-			phil->name, phil->right->name, phil->l_fork->name, phil->r_fork->name);
+		printf("%d     %d     %d     || %d      %d || %d   %d\n", phil->left->name,\
+			phil->name, phil->right->name, phil->l_fork->name, phil->r_fork->name, phil->meals, phil->data->min_meals);
 		if (phil == highest(phil))
 			break ;
 		phil = phil->right;
 	}
-	printf("-----------------------------------\n");
+	printf("--------------------------------------------------\n");
 }
 
 // free_all for circular list, with t_data and t_fork

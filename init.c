@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:29:02 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/04 11:26:13 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/04 12:29:58 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	destroy_mutexes(t_philo **phil)
 {
 	t_philo	*p;
 
-	write(1, "destroy\n", 8);
+	// write(1, "destroy\n", 8);
 	if (!phil || !*phil)
 		return ;
 	p = *phil;
