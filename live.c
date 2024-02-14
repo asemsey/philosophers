@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:09:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/04 12:50:06 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/14 13:33:08 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,33 +40,30 @@ int	sleeping(t_philo *phil)
 {
 	long int	start;
 
+	// phil->state = 0;
 	start = get_timestamp(phil->data->start);
-	printf("%ld %d is sleeping\n", start, phil->name);
-	phil->state = 0;
-	// 	usleep(1000 * phil->data->sleep_time);
+	ft_status(phil, 0);
 	while (get_timestamp(phil->data->start) - phil->last_meal <= phil->data->life_time)
 	{
 		if (get_timestamp(phil->data->start) - start >= phil->data->sleep_time)
 			return (1);
-		usleep(990);//?
+		ft_usleep(1);//?
 	}
 	return (0);
 }
 
 void	eating(t_philo *phil)
 {
-	printf("%ld %d is eating\n", get_timestamp(phil->data->start), phil->name);
-	phil->state = 1;
-	usleep(1000 * phil->data->eat_time);
+	// phil->state = 1;
+	ft_status(phil, 3);
+	ft_usleep(phil->data->eat_time);
 	pthread_mutex_unlock(&(phil->l_fork->mutex));
 	phil->l_fork->locked = 0;
 	pthread_mutex_unlock(&(phil->r_fork->mutex));
 	phil->r_fork->locked = 0;
 	if (phil->data->min_meals && phil->meals >= phil->data->min_meals)
 	{
-		usleep(100);//?
-		printf("%ld %d has eaten %d meals\n", get_timestamp(phil->data->start), phil->name, phil->meals);
-		usleep(100);//?
+		ft_status(phil, 4);
 		exit(EXIT_SUCCESS);
 	}
 	phil->meals++;
@@ -75,20 +72,20 @@ void	eating(t_philo *phil)
 
 int	thinking(t_philo *phil)
 {
-	printf("%ld %d is thinking\n", get_timestamp(phil->data->start), phil->name);
-	phil->state = 2;
+	// phil->state = 2;
+	ft_status(phil, 1);
 	while (get_timestamp(phil->data->start) - phil->last_meal <= phil->data->life_time)
 	{
 		if (!phil->l_fork->locked)
 		{
 			pthread_mutex_lock(&(phil->l_fork->mutex));
-			printf("%ld %d has taken a fork\n", get_timestamp(phil->data->start), phil->name);
+			ft_status(phil, 2);
 			phil->l_fork->locked = phil->name;
 		}
 		if (!phil->r_fork->locked)
 		{
 			pthread_mutex_lock(&(phil->r_fork->mutex));
-			printf("%ld %d has taken a fork\n", get_timestamp(phil->data->start), phil->name);
+			ft_status(phil, 2);
 			phil->r_fork->locked = phil->name;
 		}
 		if (phil->l_fork->locked == phil->name && phil->r_fork->locked == phil->name)
@@ -98,30 +95,21 @@ int	thinking(t_philo *phil)
 	return (0);
 }
 
-// get the difference between start and now in ms
-long int	get_timestamp(long int start)
+void	ft_status(t_philo *phil, int state)
 {
-	struct timeval	time;
-	long int		now;
-
-	now = 0;
-	if (gettimeofday(&time, NULL) == 0)
+	pthread_mutex_lock(&(phil->data->m_print));
+	if (state == 0)
+		printf("%ld %d is sleeping\n", get_timestamp(phil->data->start), phil->name);
+	else if (state == 1)
+		printf("%ld %d is thinking\n", get_timestamp(phil->data->start), phil->name);
+	else if (state == 2)
+		printf("%ld %d has taken a fork\n", get_timestamp(phil->data->start), phil->name);
+	else if (state == 3)
+		printf("%ld %d is eating\n", get_timestamp(phil->data->start), phil->name);
+	else if (state == 4)
 	{
-		now = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+		printf("%ld %d has eaten %d meals\n", get_timestamp(phil->data->start), phil->name, phil->data->min_meals);
+		exit(EXIT_SUCCESS);
 	}
-	return (now - start);
-}
-
-// get the current time in ms
-long int	get_start()
-{
-	struct timeval	time;
-	long int		now;
-
-	now = 0;
-	if (gettimeofday(&time, NULL) == 0)
-	{
-		now = (time.tv_sec * 1000) + (time.tv_usec / 1000);
-	}
-	return (now);
+	pthread_mutex_unlock(&(phil->data->m_print));
 }

@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:26:38 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/04 12:34:30 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/14 13:07:26 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	start_threads(t_philo **phil)
 	t_philo	*head;
 
 	head = *phil;
-	(*phil)->data->start = get_start();
+	(*phil)->data->start = ft_timeofday() / 1000;
 	while (*phil)
 	{
 		pthread_create(&(*phil)->id, NULL, live, (void *)*phil);
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 	phil = create_table(ft_atoi(argv[1]), get_data(argc, argv));
 	if (!phil)
 		return (EXIT_FAILURE);
-	// print_table(phil);
+	print_table(phil);
 	start_threads(&phil);
 	return (0);
 }

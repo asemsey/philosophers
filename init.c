@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:29:02 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/04 12:29:58 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/14 13:14:19 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	destroy_mutexes(t_philo **phil)
 t_data	*get_data(int argc, char **argv)
 {
 	t_data	*data;
-	int		i;
 
 	data = (t_data *)malloc(sizeof(t_data));
 	if (!data)
@@ -84,6 +83,6 @@ t_data	*get_data(int argc, char **argv)
 	data->sleep_time = ft_atoi(argv[4]);
 	if (argc == 6)
 		data->min_meals = ft_atoi(argv[5]);
-	i = 0;
+	pthread_mutex_init(&(data->m_print), NULL);
 	return (data);
 }

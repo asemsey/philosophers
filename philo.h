@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/04 11:44:08 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/14 13:38:47 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@
 
 typedef struct s_data
 {
-	time_t	start;
-	int		life_time;
-	int		eat_time;
-	int		sleep_time;
-	int		min_meals;
+	time_t			start;
+	int				life_time;
+	int				eat_time;
+	int				sleep_time;
+	int				min_meals;
+	pthread_mutex_t	m_print;
 }	t_data;
 
 typedef struct s_fork
@@ -42,12 +43,12 @@ struct s_philo
 {
 	t_data		*data;
 	pthread_t	id;
+	pthread_t	death;
 	int			name;
 	t_philo		*left;
 	t_philo		*right;
 	t_fork		*l_fork;
 	t_fork		*r_fork;
-	int			life;
 	int			state;
 	int			meals;
 	long int	last_meal;
@@ -58,9 +59,8 @@ struct s_philo
 int			ft_error(char *str, t_philo **phil);
 int			check_args(int argc, char **argv);
 t_data		*get_data(int argc, char **argv);
-long int	get_start(void);
-long int	get_timestamp(long int start);
 void		*live(void *param);
+// long int	get_start(void);
 
 // t_philo funcs:
 
@@ -70,6 +70,7 @@ t_philo		*new_philo(int name, t_data *data);
 int			tablesize(t_philo *phil);
 t_philo		*highest(t_philo *phil);
 void		print_table(t_philo *phil);
+void		ft_status(t_philo *phil, int state);
 void		free_philo(t_philo **phil);
 
 // t_fork funcs
@@ -85,5 +86,11 @@ void		destroy_mutexes(t_philo **phil);
 
 void		*free_all(void **x);
 int			ft_atoi(const char *str);
+
+// time
+
+long int	ft_timeofday(void);
+long int	get_timestamp(long int start);
+void		ft_usleep(long int ms);
 
 #endif

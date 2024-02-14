@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:35:16 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/04 12:06:01 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/14 11:00:03 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ t_philo	*create_table(int count, t_data *data)
 	p = NULL;
 	while (i <= count)
 		add_to_table(&p, new_philo(i++, data));
-	p->left = highest(p);
+	if (i > 1)
+		p->left = highest(p);
 	// all_forks(&p);
 	create_forks(&p);
 	return (p);
@@ -38,6 +39,7 @@ void	add_to_table(t_philo **phil, t_philo *new)
 	if (!*phil)
 	{
 		*phil = new;
+		(*phil)->right = *phil;
 		return ;
 	}
 	p = *phil;
@@ -61,7 +63,6 @@ t_philo	*new_philo(int name, t_data *data)
 	p->data = data;
 	p->state = 0;
 	p->meals = 0;
-	p->life = data->life_time;
 	p->id = NULL;
 	return (p);
 }
@@ -89,7 +90,7 @@ t_philo	*highest(t_philo *phil)
 {
 	while (phil && phil->right)
 	{
-		if (phil->right->name < phil->name)
+		if (phil->right->name <= phil->name)
 			break ;
 		phil = phil->right;
 	}
