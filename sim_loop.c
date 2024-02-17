@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 11:15:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 14:44:12 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/17 16:16:49 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,52 @@ void	*is_dead(void *param)
 	{
 		if (phil == head)
 			now = get_utimestamp(phil->data->start);
-		if (now - phil->last_meal >= phil->data->life_time * 1000)
+		if (now - phil->last_meal >= phil->data->life_time * 1000
+			&& !phil->is_eating)
 			break ;
 		phil = phil->right;
 	}
-	ft_status(phil, 5);
+	pthread_mutex_lock(&(phil->data->m_print));
+	printf("%ld %d died\n", get_timestamp(phil->data->start / 1000), phil->name);
+	// print_table(highest(phil)->right);
+	return (NULL);
+}
+
+void	live_odd(t_philo *phil)
+{
+	while (1)
+	{
+		thinking(phil);
+		eating(phil);
+		sleeping(phil);
+	}
+}
+
+void	live_even(t_philo *phil)
+{
+	if (phil->name % 2 == 0)
+		ft_msleep(1);
+	while (1)
+	{
+		thinking(phil);
+		eating(phil);
+		sleeping(phil);
+	}
 }
 
 void	*live(void *param)
 {
 	t_philo	*p;
+	int		n;
 
 	p = (t_philo *)param;
 	p->last_meal = get_utimestamp(p->data->start);
-	while (1)
-	{
-		thinking(p);
-		eating(p);
-		sleeping(p);
-	}
-	// exit(EXIT_SUCCESS);
+	n = highest(p)->name;
+	if (n == 1)
+		p->l_fork->locked = 2;
+	if (n % 2 == 0)
+		live_even(p);
+	else
+		live_odd(p);
 	return (NULL);
 }

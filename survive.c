@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:09:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 14:42:58 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/17 16:01:21 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,10 @@ void	eating(t_philo *phil)
 	phil->r_fork->locked = 0;
 	pthread_mutex_unlock(&(phil->l_fork->mutex));
 	pthread_mutex_unlock(&(phil->r_fork->mutex));
-	if (phil->data->min_meals && phil->meals >= phil->data->min_meals)
-	{
-		ft_status(phil, 4);
-		exit(EXIT_SUCCESS);
-	}
-	phil->meals++;
 	phil->last_meal = get_utimestamp(phil->data->start);
+	if (phil->data->min_meals && phil->meals >= phil->data->min_meals)
+		ft_status(phil, 4);
+	phil->meals++;
 	phil->is_eating = 0;
 }
 
@@ -49,7 +46,6 @@ void	thinking(t_philo *phil)
 			phil->l_fork->locked = phil->name;
 			phil->r_fork->locked = phil->name;
 			ft_status(phil, 2);
-			ft_status(phil, 2);
 			return ;
 		}
 		usleep(5);
@@ -62,17 +58,15 @@ void	ft_status(t_philo *phil, int state)
 
 	pthread_mutex_lock(&(phil->data->m_print));
 	start = phil->data->start / 1000;
-	if (state == 5)
-	{
-		printf("%ld %d died\n", get_timestamp(start), phil->name);
-		return ;
-	}
-	else if (state == 0)
+	if (state == 0)
 		printf("%ld %d is sleeping\n", get_timestamp(start), phil->name);
 	else if (state == 1)
 		printf("%ld %d is thinking\n", get_timestamp(start), phil->name);
 	else if (state == 2)
+	{
 		printf("%ld %d has taken a fork\n", get_timestamp(start), phil->name);
+		printf("%ld %d has taken a fork\n", get_timestamp(start), phil->name);
+	}
 	else if (state == 3)
 		printf("%ld %d is eating\n", get_timestamp(start), phil->name);
 	else if (state == 4)

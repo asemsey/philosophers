@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:35:16 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 14:43:06 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/17 15:17:31 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,11 @@ t_philo	*highest(t_philo *phil)
 void	free_philo(t_philo **phil)
 {
 	t_philo	*tmp;
+	t_philo	*head;
 
 	if (!phil || !*phil)
 		return ;
+	head = *phil;
 	free((*phil)->data);
 	while (*phil)
 	{
@@ -111,6 +113,8 @@ void	free_philo(t_philo **phil)
 		*phil = (*phil)->right;
 		free(tmp->l_fork);
 		free(tmp);
+		if (*phil == head)
+			break ;
 	}
 }
 
@@ -119,15 +123,15 @@ void	print_table(t_philo *phil)
 {
 	if (!phil)
 		return ;
-	printf("left  name  right || l_fork  r_fork || eaten  min meals\n");
-	printf("--------------------------------------------------\n");
+	printf("left  name  right || l_fork  r_fork || eaten\n");
+	printf("--------------------------------------------\n");
 	while (phil)
 	{
-		printf("%d     %d     %d     || %d      %d || %d   %d\n", phil->left->name,\
-			phil->name, phil->right->name, phil->l_fork->name, phil->r_fork->name, phil->meals, phil->data->min_meals);
+		printf("%d     %d     %d     || %d       %d    || %d\n", phil->left->name,\
+			phil->name, phil->right->name, phil->l_fork->locked, phil->r_fork->locked, phil->meals);
 		if (phil == highest(phil))
 			break ;
 		phil = phil->right;
 	}
-	printf("--------------------------------------------------\n");
+	printf("---------------------------------------------\n");
 }
