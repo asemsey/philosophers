@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:29:02 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/14 13:14:19 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/17 13:53:37 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,26 @@ t_data	*get_data(int argc, char **argv)
 		data->min_meals = ft_atoi(argv[5]);
 	pthread_mutex_init(&(data->m_print), NULL);
 	return (data);
+}
+
+// create, detach / join threads
+void	start_threads(t_philo **phil)
+{
+	t_philo	*head;
+
+	head = *phil;
+	(*phil)->data->start = ft_timeofday();
+	while (*phil)
+	{
+		pthread_create(&(*phil)->id, NULL, live, (void *)*phil);
+		pthread_detach((*phil)->id);
+		if ((*phil)->right == head)
+			break ;
+		*phil = (*phil)->right;
+	}
+	*phil = head;
+	pthread_create(&(*phil)->data->death, NULL, is_dead, (void *)*phil);
+	pthread_join((*phil)->data->death, NULL);
+	destroy_mutexes(phil);
+	free_philo(phil);
 }

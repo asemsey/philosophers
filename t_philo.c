@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:35:16 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/14 11:00:03 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/17 14:43:06 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,29 +61,29 @@ t_philo	*new_philo(int name, t_data *data)
 	p->left = NULL;
 	p->right = NULL;
 	p->data = data;
-	p->state = 0;
+	p->is_eating = 0;
 	p->meals = 0;
 	p->id = NULL;
 	return (p);
 }
 
 // return the number of philosophers at the table
-int	tablesize(t_philo *phil)
-{
-	int		size;
-	t_philo	*start;
+// int	tablesize(t_philo *phil)
+// {
+// 	int		size;
+// 	t_philo	*start;
 
-	size = 0;
-	start = phil;
-	while (phil)
-	{
-		size++;
-		phil = phil->right;
-		if (phil == start)
-			break;
-	}
-	return (size);
-}
+// 	size = 0;
+// 	start = phil;
+// 	while (phil)
+// 	{
+// 		size++;
+// 		phil = phil->right;
+// 		if (phil == start)
+// 			break;
+// 	}
+// 	return (size);
+// }
 
 // return the philosopher with the highest number
 t_philo	*highest(t_philo *phil)
@@ -95,6 +95,23 @@ t_philo	*highest(t_philo *phil)
 		phil = phil->right;
 	}
 	return (phil);
+}
+
+// free_all for circular list, with t_data and t_fork
+void	free_philo(t_philo **phil)
+{
+	t_philo	*tmp;
+
+	if (!phil || !*phil)
+		return ;
+	free((*phil)->data);
+	while (*phil)
+	{
+		tmp = *phil;
+		*phil = (*phil)->right;
+		free(tmp->l_fork);
+		free(tmp);
+	}
 }
 
 // print info on all philosophers, with forks
@@ -113,21 +130,4 @@ void	print_table(t_philo *phil)
 		phil = phil->right;
 	}
 	printf("--------------------------------------------------\n");
-}
-
-// free_all for circular list, with t_data and t_fork
-void	free_philo(t_philo **phil)
-{
-	t_philo	*tmp;
-
-	if (!phil || !*phil)
-		return ;
-	free((*phil)->data);
-	while (*phil)
-	{
-		tmp = *phil;
-		*phil = (*phil)->right;
-		free(tmp->l_fork);
-		free(tmp);
-	}
 }
