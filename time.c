@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:03:10 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 16:42:48 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/18 13:46:30 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,44 @@ long int	get_utimestamp(long int ustart)
 // pause for exactly us usec
 void	ft_usleep(long int us)
 {
-	long int		start;
+	long int	start;
+	long int	remaining;
 
 	start = ft_timeofday();
-	while (ft_timeofday() - start <= (us - 10))
-		usleep(10);
+	while (ft_timeofday() - start < us)
+	{
+		remaining = us - (ft_timeofday() - start);
+		if (remaining > 10000)
+			usleep(remaining / 2);
+		else
+			while (ft_timeofday() - start < us)
+				;
+	}
 }
+
+// void	precise_usleep(long usec, t_table *table)
+// {
+// 	long	start;
+// 	long	elapsed;
+// 	long	rem;
+
+// 	start = gettime(MICROSECOND);
+// 	while (gettime(MICROSECOND) - start < usec)
+// 	{
+// 		if (simulation_finished(table))
+// 			break ;
+// 		elapsed = gettime(MICROSECOND) - start;
+// 		rem = usec - elapsed;
+// 		if (rem > 1e4)
+// 			usleep(rem / 2);
+// 		else
+// 			while (gettime(MICROSECOND) - start < usec)
+// 				;
+// 	}
+// }
 
 // pause for exactly ms msec
 void	ft_msleep(long int ms)
 {
-	long int		start;
-
-	start = ft_timeofday();
-	while (ft_timeofday() - start <= (ms * 1000 - 10))
-		usleep(10);
+	ft_usleep(ms * 1000);
 }

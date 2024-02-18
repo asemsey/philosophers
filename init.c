@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:29:02 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 16:22:03 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/18 14:51:09 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	init_mutexes(t_philo **phil)
 		if (*phil == p)
 			break ;
 	}
+	pthread_mutex_init(&(p->data->m_print), NULL);
+	pthread_mutex_init(&(p->data->m_var), NULL);
 	*phil = p;
 }
 
@@ -70,6 +72,8 @@ void	destroy_mutexes(t_philo **phil)
 			break ;
 	}
 	*phil = p;
+	pthread_mutex_destroy(&((*phil)->data->m_print));
+	pthread_mutex_destroy(&((*phil)->data->m_var));
 }
 
 t_data	*get_data(int argc, char **argv)
@@ -82,9 +86,9 @@ t_data	*get_data(int argc, char **argv)
 	data->life_time = ft_atoi(argv[2]);
 	data->eat_time = ft_atoi(argv[3]);
 	data->sleep_time = ft_atoi(argv[4]);
+	data->all_ready = 0;
 	if (argc == 6)
 		data->min_meals = ft_atoi(argv[5]);
-	pthread_mutex_init(&(data->m_print), NULL);
 	return (data);
 }
 
@@ -94,7 +98,7 @@ void	start_threads(t_philo **phil)
 	t_philo	*head;
 
 	head = *phil;
-	(*phil)->data->start = ft_timeofday();
+	init_mutexes(phil);
 	while (*phil)
 	{
 		pthread_create(&(*phil)->id, NULL, live, (void *)*phil);
@@ -104,6 +108,8 @@ void	start_threads(t_philo **phil)
 		*phil = (*phil)->right;
 	}
 	*phil = head;
+	(*phil)->data->start = ft_timeofday();
+	set_int(&(*phil)->data->all_ready, 1, &(*phil)->data->m_var);
 	pthread_create(&(*phil)->data->death, NULL, is_dead, (void *)*phil);
 	pthread_join((*phil)->data->death, NULL);
 	destroy_mutexes(phil);

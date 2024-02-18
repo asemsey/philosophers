@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 14:37:49 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/18 14:24:04 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,14 @@
 
 typedef struct s_data
 {
-	int				fd;
+	int				all_ready;
 	time_t			start;
 	int				life_time;
 	int				eat_time;
 	int				sleep_time;
 	int				min_meals;
 	pthread_t		death;
+	pthread_mutex_t	m_var;
 	pthread_mutex_t	m_print;
 }	t_data;
 
@@ -91,9 +92,13 @@ void		destroy_mutexes(t_philo **phil);
 
 // helpers
 
-void		*free_all(void **x);
+// void		*free_all(void **x);
 void		ft_putnbr_fd(int n, int fd);
 int			ft_atoi(const char *str);
+int			get_int(int *var, pthread_mutex_t *mutex);
+long int	get_long(long int *var, pthread_mutex_t *mutex);
+void		set_int(int *var, int value, pthread_mutex_t *mutex);
+void		set_long(long int *var, long int value, pthread_mutex_t *mutex);
 
 long int	ft_timeofday(void);
 long int	get_utimestamp(long int start);

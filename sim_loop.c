@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 11:15:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 17:55:45 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/18 14:40:06 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	*is_dead(void *param)
 	{
 		if (phil == head)
 			now = get_utimestamp(phil->data->start);
-		if (now - phil->last_meal >= phil->data->life_time * 1000
-			&& !phil->is_eating)
+		if (now - get_long(&phil->last_meal, &phil->data->m_var) >= \
+			phil->data->life_time * 1000 && !phil->is_eating)
 			break ;
 		phil = phil->right;
 	}
@@ -38,6 +38,8 @@ void	*is_dead(void *param)
 
 void	live_odd(t_philo *phil)
 {
+	if (phil->name == 1)
+		ft_msleep(phil->data->eat_time);
 	if (phil->name == 1 || phil->name % 2 == 0)
 		ft_msleep(phil->data->eat_time);
 	while (1)
@@ -66,7 +68,9 @@ void	*live(void *param)
 	int		n;
 
 	p = (t_philo *)param;
-	p->last_meal = get_utimestamp(p->data->start);
+	while (!get_int(&p->data->all_ready, &p->data->m_var))
+		;
+	set_long(&p->last_meal, get_utimestamp(p->data->start), &p->data->m_var);
 	n = highest(p)->name;
 	if (n == 1)
 		p->l_fork->locked = 2;

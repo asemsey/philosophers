@@ -1,10 +1,24 @@
+current status:
+	LazyTester passes all cases but there are some bugs now.
+	philosophers only start thinking after a certain amount of time has passed
+	they should think first and then decide what to do.
+	the algorithm is still a bit strange and the structure of the project
+	needs some cleaning up.
+	also make sure large numbers keep working with new changes.
+	check for min_meals == 0 maybe.
+	you should make (or find) a list of test cases to check.
+	make sure all the mutexes work correctly!!!
+	the forks are a bit weirdly handled right now...
+
+
 current to-do:
 -	code algorithm (odd/even)
 
 ALGORITHM:
 	(case eat == sleep)
 	case odd:
-		1 and even wait for rest to eat
+		even wait for rest to eat
+		1 wait for 2 eats
 		then n/2 normal cycles (counter)
 		then think and wait for eattime ms
 		loop (step 2)

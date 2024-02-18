@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:09:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 18:06:22 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/18 14:45:50 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,41 @@ void	sleeping(t_philo *phil)
 
 void	eating(t_philo *phil)
 {
-	phil->is_eating = 1;
+	set_int(&phil->is_eating, 1, &phil->data->m_var);
+	// phil->is_eating = 1;
 	ft_status(phil, 3);
 	ft_msleep(phil->data->eat_time);
-	phil->l_fork->locked = 0;
-	phil->r_fork->locked = 0;
+	set_int(&phil->l_fork->locked, 0, &phil->data->m_var);
+	// phil->l_fork->locked = 0;
+	set_int(&phil->r_fork->locked, 0, &phil->data->m_var);
+	// phil->r_fork->locked = 0;
 	pthread_mutex_unlock(&(phil->l_fork->mutex));
 	pthread_mutex_unlock(&(phil->r_fork->mutex));
-	phil->last_meal = get_utimestamp(phil->data->start);
+	// phil->last_meal = get_utimestamp(phil->data->start);
+	set_long(&phil->last_meal, get_utimestamp(phil->data->start), &phil->data->m_var);
 	if (phil->data->min_meals && phil->meals >= phil->data->min_meals)
 		ft_status(phil, 4);
 	phil->meals++;
-	phil->is_eating = 0;
+	set_int(&phil->is_eating, 0, &phil->data->m_var);
+	// phil->is_eating = 0;
 }
 
 void	thinking(t_philo *phil)
 {
 	ft_status(phil, 1);
-	while (phil->left->is_eating)
-		ft_usleep(900);
+	// while (get_int(&phil->left->is_eating, &phil->data->m_var))
+	// 	ft_msleep(1);
 	while (1)
 	{
-		if (!phil->l_fork->locked && !phil->r_fork->locked)
+		if (!get_int(&phil->l_fork->locked, &phil->data->m_var)
+			&& !get_int(&phil->r_fork->locked, &phil->data->m_var))
 		{
 			pthread_mutex_lock(&(phil->l_fork->mutex));
 			pthread_mutex_lock(&(phil->r_fork->mutex));
-			phil->l_fork->locked = phil->name;
-			phil->r_fork->locked = phil->name;
+			set_int(&phil->l_fork->locked, phil->name, &phil->data->m_var);
+			// phil->l_fork->locked = phil->name;
+			set_int(&phil->r_fork->locked, phil->name, &phil->data->m_var);
+			// phil->r_fork->locked = phil->name;
 			ft_status(phil, 2);
 			return ;
 		}
