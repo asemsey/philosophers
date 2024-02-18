@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:26:38 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 16:19:02 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/17 16:40:40 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 {
 	t_philo		*phil;
 
-	// atexit(leak);
+	atexit(leak);
 	if (check_args(argc, argv) == 0)
 		return (ft_error("invalid arguments", NULL));
 	phil = create_table(ft_atoi(argv[1]), get_data(argc, argv));

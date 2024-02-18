@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 11:15:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 16:16:49 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/17 17:55:45 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	*is_dead(void *param)
 
 void	live_odd(t_philo *phil)
 {
+	if (phil->name == 1 || phil->name % 2 == 0)
+		ft_msleep(phil->data->eat_time);
 	while (1)
 	{
 		thinking(phil);
@@ -49,7 +51,7 @@ void	live_odd(t_philo *phil)
 void	live_even(t_philo *phil)
 {
 	if (phil->name % 2 == 0)
-		ft_msleep(1);
+		ft_msleep(phil->data->eat_time);
 	while (1)
 	{
 		thinking(phil);

@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:03:10 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 13:33:08 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/17 16:42:48 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,6 @@ void	ft_msleep(long int ms)
 	long int		start;
 
 	start = ft_timeofday();
-	while (ft_timeofday() - start <= (ms * 1000 - 20))
-		usleep(20);
+	while (ft_timeofday() - start <= (ms * 1000 - 10))
+		usleep(10);
 }

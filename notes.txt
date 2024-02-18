@@ -1,6 +1,19 @@
 current to-do:
 -	code algorithm (odd/even)
--	fix 1 philo (cant eat)
+
+ALGORITHM:
+	(case eat == sleep)
+	case odd:
+		1 and even wait for rest to eat
+		then n/2 normal cycles (counter)
+		then think and wait for eattime ms
+		loop (step 2)
+	case even:
+		even wait for rest to eat
+		then normal cycle
+	(case eat != sleep)
+		same start, no counter
+
 
 ---------------------------------------------------------------
 

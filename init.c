@@ -6,14 +6,13 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:29:02 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 13:53:37 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/17 16:22:03 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 // 0-fail   1-endless   2-limit
-// maybe check reasonable input values?
 int	check_args(int argc, char **argv)
 {
 	int	i;
@@ -23,13 +22,15 @@ int	check_args(int argc, char **argv)
 		return (0);
 	while (i < 5)
 	{
-		if (ft_atoi(argv[i]) == 0)
+		if (i == 1 && ft_atoi(argv[i]) > 200)
+			return (0);
+		if (ft_atoi(argv[i]) < 1)
 			return (0);
 		i++;
 	}
 	if (argc == 6)
 	{
-		if (ft_atoi(argv[5]) == 0)
+		if (ft_atoi(argv[5]) < 1)
 			return (0);
 		return (2);
 	}

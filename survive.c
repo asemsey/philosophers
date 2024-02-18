@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:09:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/17 16:01:21 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/02/17 18:06:22 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	eating(t_philo *phil)
 void	thinking(t_philo *phil)
 {
 	ft_status(phil, 1);
+	while (phil->left->is_eating)
+		ft_usleep(900);
 	while (1)
 	{
 		if (!phil->l_fork->locked && !phil->r_fork->locked)
