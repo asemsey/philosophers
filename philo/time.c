@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:03:10 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/08 19:58:30 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/10 16:27:30 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,24 +67,3 @@ void	ft_msleep(long int ms)
 {
 	ft_usleep(ms * 1000);
 }
-
-// void	precise_usleep(long usec, t_table *table)
-// {
-// 	long	start;
-// 	long	elapsed;
-// 	long	rem;
-
-// 	start = gettime(MICROSECOND);
-// 	while (gettime(MICROSECOND) - start < usec)
-// 	{
-// 		if (simulation_finished(table))
-// 			break ;
-// 		elapsed = gettime(MICROSECOND) - start;
-// 		rem = usec - elapsed;
-// 		if (rem > 1e4)
-// 			usleep(rem / 2);
-// 		else
-// 			while (gettime(MICROSECOND) - start < usec)
-// 				;
-// 	}
-// }

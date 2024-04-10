@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/10 13:38:40 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/10 16:40:55 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct s_data
 
 typedef struct s_fork
 {
-	pthread_mutex_t	mutex;
 	int				locked;
 	int				name;
 }	t_fork;
@@ -59,47 +58,34 @@ struct s_philo
 
 // init:
 
-int			ft_error(char *str, t_philo **phil);
 int			check_args(int argc, char **argv);
-t_data		*get_data(int argc, char **argv);
 void		start_threads(t_philo **phil);
 
 // simulation loop
 
 void		*live(void *param);
-void		*is_dead(void *param);
-void		ft_status(t_philo *phil, int state);
+void		*monitor_status(void *param);
 void		thinking(t_philo *phil, int ms);
 void		eating(t_philo *phil);
 void		sleeping(t_philo *phil);
+void		ft_status(t_philo *phil, int state);
 
-// t_philo funcs:
+// struct funcs:
 
+t_data		*get_data(int argc, char **argv);
 t_philo		*create_table(int count, t_data *data);
-void		add_to_table(t_philo **phil, t_philo *new);
-t_philo		*new_philo(int name, t_data *data);
 t_philo		*highest(t_philo *phil);
-void		print_table(t_philo *phil);
+void		create_forks(t_philo **phil);
 void		free_philo(t_philo **phil);
 
-// t_fork funcs
+// utils
 
-void		create_forks(t_philo **phil);
-void		all_forks(t_philo **phil);
-void		add_fork(t_philo **phil, t_fork *new);
-t_fork		*new_fork(int name);
-void		init_mutexes(t_philo **phil);
-void		destroy_mutexes(t_philo **phil);
-
-// helpers
-
-// void		*free_all(void **x);
-void		ft_putnbr_fd(int n, int fd);
 int			ft_atoi(const char *str);
 int			get_int(int *var, pthread_mutex_t *mutex);
 long int	get_long(long int *var, pthread_mutex_t *mutex);
 void		set_int(int *var, int value, pthread_mutex_t *mutex);
 void		set_long(long int *var, long int value, pthread_mutex_t *mutex);
+void		increment_int(int *var, pthread_mutex_t *mutex);
 
 long int	ft_timeofday(void);
 long int	get_utimestamp(long int start);

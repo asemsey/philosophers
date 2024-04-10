@@ -6,53 +6,17 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 11:15:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/10 13:13:53 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/10 15:55:34 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*is_dead(void *param)
-{
-	t_philo		*phil;
-	t_philo		*head;
-	long int	now;
-
-	phil = (t_philo *)param;
-	head = phil;
-	now = get_utimestamp(phil->data->start);
-	while (phil)
-	{
-		if (phil == head)
-			now = get_utimestamp(phil->data->start);
-		if (now - get_long(&phil->last_meal, &phil->data->m_var) >= \
-			phil->data->life_time * 1000 && !get_int(&phil->is_eating, \
-			&phil->data->m_var))
-			break ;
-		phil = phil->right;
-	}
-	pthread_mutex_lock(&(phil->data->m_print));
-	printf("%ld %d died\n", get_timestamp(phil->data->start / 1000), \
-		phil->name);
-	return (NULL);
-}
-
-int	get_think_counter(int name, int n)
-{
-	if (name == 1 || name == 2)
-		return (0);
-	if (name % 2 == 0)
-		return ((n / 2) - ((name - 2) / 2));
-	return ((n / 2) - ((name - 1) / 2));
-}
-
-// here!!!
 void	live_odd(t_philo *phil, int n)
 {
 	int	loop;
 
 	loop = 1;
-	phil->t_since_think = get_think_counter(phil->name, n);
 	if (phil->name == 2)
 		thinking(phil, 2 * phil->data->eat_time);
 	else if (phil->name % 2 == 0 || phil->name == 1)
@@ -105,6 +69,14 @@ void	*live(void *param)
 	if (n % 2 == 0)
 		live_even(p);
 	else
+	{
+		if (p->name == 1 || p->name == 2)
+			p->t_since_think = 0;
+		else if (p->name % 2 == 0)
+			p->t_since_think = (n / 2) - ((p->name - 2) / 2);
+		else
+			p->t_since_think = (n / 2) - ((p->name - 1) / 2);
 		live_odd(p, n);
+	}
 	return (NULL);
 }

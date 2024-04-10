@@ -5,16 +5,15 @@ current status:
 	find a list of test cases to check.
 	make sure all the mutexes work correctly!!! no data races!!! -> helgrind/valgrind
 	weird bug: philos die immediately after eating???
-	big oopsie: number of times each philo must eat means EACH philo must eat enough
 
 	[philosophers only start thinking after a certain amount of time has passed
 	they should think first and then decide what to do.
 	the algorithm is still a bit strange
 	also make sure large numbers keep working with new changes.]
 
-
 current to-do:
--	code algorithm (odd/even)
+-	check data races
+-	remove test stuff (makefile, unused)
 
 ALGORITHM:
 	(case eat == sleep)
@@ -29,7 +28,6 @@ ALGORITHM:
 		then normal cycle
 	(case eat != sleep)
 		same start, no counter
-
 
 ---------------------------------------------------------------
 
@@ -49,26 +47,3 @@ usleep(1000) == 1 millisecond
 state:		0-sleep 1-eat 2-think
 
 ---------------------------------------------------------------
-
-for testing stuff:
-	if (p->name == 2)
-	{
-		usleep(1000 * 1000 * 2);
-		eating(p);
-		usleep(1000 * 1000 * 2);
-	}
-	else
-		usleep(1000 * 1000 * 10);
-
-
-struct for array:
-// typedef struct s_philo
-// {
-// 	t_data		*data;
-// 	pthread_t	id;
-// 	int			name;
-// 	int			life;
-// 	int			state;
-// 	int			left;
-// 	int			right;
-// }	t_philo;

@@ -6,11 +6,14 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:35:16 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/10 13:42:48 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/10 16:23:44 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+t_philo	*new_philo(int name, t_data *data);
+void	add_to_table(t_philo **phil, t_philo *new);
 
 // create the linked list of philosophers
 t_philo	*create_table(int count, t_data *data)
@@ -99,21 +102,3 @@ void	free_philo(t_philo **phil)
 			break ;
 	}
 }
-
-// return the number of philosophers at the table
-// int	tablesize(t_philo *phil)
-// {
-// 	int		size;
-// 	t_philo	*start;
-
-// 	size = 0;
-// 	start = phil;
-// 	while (phil)
-// 	{
-// 		size++;
-// 		phil = phil->right;
-// 		if (phil == start)
-// 			break;
-// 	}
-// 	return (size);
-// }

@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:09:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/10 13:39:15 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/10 16:02:41 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@ void	eating(t_philo *phil)
 	set_int(&phil->r_fork->locked, 0, &phil->data->m_var);
 	set_long(&phil->last_meal, get_utimestamp(phil->data->start), \
 		&phil->data->m_var);
-	phil->meals++;
-	if (phil->data->min_meals && phil->meals >= phil->data->min_meals)
-		ft_status(phil, 4);
+	increment_int(&phil->meals, &phil->data->m_var);
 	set_int(&phil->is_eating, 0, &phil->data->m_var);
 }
 
@@ -70,11 +68,5 @@ void	ft_status(t_philo *phil, int state)
 	}
 	else if (state == 3)
 		printf("%ld %d is eating\n", get_timestamp(start), phil->name);
-	else if (state == 4)
-	{
-		printf("%ld %d has eaten %d meals\n", get_timestamp(start), phil->name, \
-			phil->data->min_meals);
-		exit(EXIT_SUCCESS);
-	}
 	pthread_mutex_unlock(&(phil->data->m_print));
 }

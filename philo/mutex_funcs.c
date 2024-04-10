@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 13:47:17 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/18 14:24:07 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/10 15:59:54 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,12 @@ void	set_long(long int *var, long int value, pthread_mutex_t *mutex)
 {
 	pthread_mutex_lock(mutex);
 	*var = value;
+	pthread_mutex_unlock(mutex);
+}
+
+void	increment_int(int *var, pthread_mutex_t *mutex)
+{
+	pthread_mutex_lock(mutex);
+	*var = *var + 1;
 	pthread_mutex_unlock(mutex);
 }
