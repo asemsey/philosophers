@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:03:10 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/18 13:46:30 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/08 19:58:30 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ long int	ft_timeofday(void)
 	struct timeval	time;
 
 	if (gettimeofday(&time, NULL) == 0)
-		return((time.tv_sec * 1000000) + (time.tv_usec));
+		return ((time.tv_sec * 1000000) + (time.tv_usec));
 	return (-1);
 }
 
@@ -62,6 +62,12 @@ void	ft_usleep(long int us)
 	}
 }
 
+// pause for exactly ms msec
+void	ft_msleep(long int ms)
+{
+	ft_usleep(ms * 1000);
+}
+
 // void	precise_usleep(long usec, t_table *table)
 // {
 // 	long	start;
@@ -82,9 +88,3 @@ void	ft_usleep(long int us)
 // 				;
 // 	}
 // }
-
-// pause for exactly ms msec
-void	ft_msleep(long int ms)
-{
-	ft_usleep(ms * 1000);
-}

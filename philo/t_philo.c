@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:35:16 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/18 14:13:39 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/10 13:42:48 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ t_philo	*create_table(int count, t_data *data)
 		add_to_table(&p, new_philo(i++, data));
 	if (i > 1)
 		p->left = highest(p);
-	// all_forks(&p);
 	create_forks(&p);
 	return (p);
 }
@@ -62,28 +61,11 @@ t_philo	*new_philo(int name, t_data *data)
 	p->right = NULL;
 	p->data = data;
 	p->is_eating = 0;
+	p->t_since_think = 0;
 	p->meals = 0;
 	p->id = NULL;
 	return (p);
 }
-
-// return the number of philosophers at the table
-// int	tablesize(t_philo *phil)
-// {
-// 	int		size;
-// 	t_philo	*start;
-
-// 	size = 0;
-// 	start = phil;
-// 	while (phil)
-// 	{
-// 		size++;
-// 		phil = phil->right;
-// 		if (phil == start)
-// 			break;
-// 	}
-// 	return (size);
-// }
 
 // return the philosopher with the highest number
 t_philo	*highest(t_philo *phil)
@@ -118,20 +100,20 @@ void	free_philo(t_philo **phil)
 	}
 }
 
-// print info on all philosophers, with forks
-void	print_table(t_philo *phil)
-{
-	if (!phil)
-		return ;
-	printf("left  name  right || l_fork  r_fork || eaten\n");
-	printf("--------------------------------------------\n");
-	while (phil)
-	{
-		printf("%d     %d     %d     || %d       %d    || %d\n", phil->left->name,\
-			phil->name, phil->right->name, phil->l_fork->locked, phil->r_fork->locked, phil->meals);
-		if (phil == highest(phil))
-			break ;
-		phil = phil->right;
-	}
-	printf("---------------------------------------------\n");
-}
+// return the number of philosophers at the table
+// int	tablesize(t_philo *phil)
+// {
+// 	int		size;
+// 	t_philo	*start;
+
+// 	size = 0;
+// 	start = phil;
+// 	while (phil)
+// 	{
+// 		size++;
+// 		phil = phil->right;
+// 		if (phil == start)
+// 			break;
+// 	}
+// 	return (size);
+// }

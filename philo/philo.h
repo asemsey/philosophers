@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/02/18 14:24:04 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/10 13:38:40 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_fork
 	int				name;
 }	t_fork;
 
-typedef struct s_philo t_philo;
+typedef struct s_philo	t_philo;
 // state: 0-sleep 1-eat 2-think
 struct s_philo
 {
@@ -53,6 +53,7 @@ struct s_philo
 	t_fork		*r_fork;
 	int			is_eating;
 	int			meals;
+	int			t_since_think;
 	long int	last_meal;
 };
 
@@ -68,7 +69,7 @@ void		start_threads(t_philo **phil);
 void		*live(void *param);
 void		*is_dead(void *param);
 void		ft_status(t_philo *phil, int state);
-void		thinking(t_philo *phil);
+void		thinking(t_philo *phil, int ms);
 void		eating(t_philo *phil);
 void		sleeping(t_philo *phil);
 
