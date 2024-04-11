@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:09:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/10 16:02:41 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/11 16:53:30 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	eating(t_philo *phil)
 	set_int(&phil->is_eating, 1, &phil->data->m_var);
 	ft_status(phil, 3);
 	ft_msleep(phil->data->eat_time);
-	set_int(&phil->l_fork->locked, 0, &phil->data->m_var);
-	set_int(&phil->r_fork->locked, 0, &phil->data->m_var);
+	set_int(&phil->l_fork->locked, 0, &phil->l_fork->m_fork);
+	set_int(&phil->r_fork->locked, 0, &phil->r_fork->m_fork);
 	set_long(&phil->last_meal, get_utimestamp(phil->data->start), \
 		&phil->data->m_var);
 	increment_int(&phil->meals, &phil->data->m_var);
@@ -39,11 +39,11 @@ void	thinking(t_philo *phil, int ms)
 		ft_msleep(ms);
 	while (1)
 	{
-		if (!get_int(&phil->l_fork->locked, &phil->data->m_var)
-			&& !get_int(&phil->r_fork->locked, &phil->data->m_var))
+		if (!get_int(&phil->l_fork->locked, &phil->l_fork->m_fork)
+			&& !get_int(&phil->r_fork->locked, &phil->r_fork->m_fork))
 		{
-			set_int(&phil->l_fork->locked, phil->name, &phil->data->m_var);
-			set_int(&phil->r_fork->locked, phil->name, &phil->data->m_var);
+			set_int(&phil->l_fork->locked, phil->name, &phil->l_fork->m_fork);
+			set_int(&phil->r_fork->locked, phil->name, &phil->r_fork->m_fork);
 			ft_status(phil, 2);
 			return ;
 		}

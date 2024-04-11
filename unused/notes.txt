@@ -2,16 +2,12 @@ current status:
 	LazyTester passes all cases...
 	the structure of the project needs some cleaning up.
 	check for min_meals == 0 maybe?
-	find a list of test cases to check.
 	make sure all the mutexes work correctly!!! no data races!!! -> helgrind/valgrind
 	weird bug: philos die immediately after eating???
 
-	[philosophers only start thinking after a certain amount of time has passed
-	they should think first and then decide what to do.
-	the algorithm is still a bit strange
-	also make sure large numbers keep working with new changes.]
-
 current to-do:
+-	mutex to protect that a philo dies and start eating at the same time
+		/dies immediately after eating !!!!!!!
 -	check data races
 -	remove test stuff (makefile, unused)
 
@@ -47,3 +43,11 @@ usleep(1000) == 1 millisecond
 state:		0-sleep 1-eat 2-think
 
 ---------------------------------------------------------------
+
+https://github.com/mharriso/school21-checklists/blob/master/ng_4_philosophers.pdf
+
+1 800 200 200	-> die
+5 800 200 200	-> no die
+5 800 200 200 7	-> end after 7 each
+4 410 200 200	-> no die
+4 310 200 100	-> die

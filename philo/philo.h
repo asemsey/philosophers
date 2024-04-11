@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/10 16:40:55 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/11 17:03:27 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_data
 
 typedef struct s_fork
 {
+	pthread_mutex_t	m_fork;
 	int				locked;
 	int				name;
 }	t_fork;
@@ -50,9 +51,9 @@ struct s_philo
 	t_philo		*right;
 	t_fork		*l_fork;
 	t_fork		*r_fork;
+	int			t_since_think;
 	int			is_eating;
 	int			meals;
-	int			t_since_think;
 	long int	last_meal;
 };
 
