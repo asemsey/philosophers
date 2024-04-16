@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/11 17:03:27 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/16 15:00:01 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ typedef struct s_data
 	int				eat_time;
 	int				sleep_time;
 	int				min_meals;
-	pthread_t		death;
+	int				end_sim;
 	pthread_mutex_t	m_var;
+	pthread_mutex_t	m_die;
 	pthread_mutex_t	m_print;
 }	t_data;
 
@@ -37,16 +38,15 @@ typedef struct s_fork
 {
 	pthread_mutex_t	m_fork;
 	int				locked;
-	int				name;
 }	t_fork;
 
 typedef struct s_philo	t_philo;
 // state: 0-sleep 1-eat 2-think
 struct s_philo
 {
+	int			name;
 	t_data		*data;
 	pthread_t	id;
-	int			name;
 	t_philo		*left;
 	t_philo		*right;
 	t_fork		*l_fork;
@@ -65,7 +65,7 @@ void		start_threads(t_philo **phil);
 // simulation loop
 
 void		*live(void *param);
-void		*monitor_status(void *param);
+void		monitor_status(t_philo *phil);
 void		thinking(t_philo *phil, int ms);
 void		eating(t_philo *phil);
 void		sleeping(t_philo *phil);
@@ -77,6 +77,7 @@ t_data		*get_data(int argc, char **argv);
 t_philo		*create_table(int count, t_data *data);
 t_philo		*highest(t_philo *phil);
 void		create_forks(t_philo **phil);
+void		unlock_all(t_philo *phil);
 void		free_philo(t_philo **phil);
 
 // utils
@@ -91,7 +92,7 @@ void		increment_int(int *var, pthread_mutex_t *mutex);
 long int	ft_timeofday(void);
 long int	get_utimestamp(long int start);
 long int	get_timestamp(long int start);
-void		ft_usleep(long int ms);
-void		ft_msleep(long int ms);
+void		ft_msleep(long int ms, int *end_sim, pthread_mutex_t *die);
+void		ft_usleep(long int us, int *end_sim, pthread_mutex_t *die);
 
 #endif

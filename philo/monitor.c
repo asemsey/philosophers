@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 11:15:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/10 16:27:26 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/16 14:45:07 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,35 +30,87 @@ int	all_ate_enough(t_philo *phil, int min)
 
 int	is_dead(t_philo *phil, long int now)
 {
-	if (now - get_long(&phil->last_meal, &phil->data->m_var) >= \
-		phil->data->life_time * 1000 && !get_int(&phil->is_eating, \
-		&phil->data->m_var))
-		return (phil->name);
-	return (0);
-}
+	t_philo	*head;
+	int		dead;
 
-void	*monitor_status(void *param)
-{
-	t_philo		*phil;
-	int			dead;
-	long int	now;
-
-	phil = (t_philo *)param;
+	head = phil;
 	dead = 0;
 	while (phil)
 	{
-		if (phil->name == 1)
-			now = get_utimestamp(phil->data->start);
-		if (phil->name == 1 && phil->data->min_meals && all_ate_enough(phil, \
-			phil->data->min_meals))
-			break ;
-		dead = is_dead(phil, now);
-		if (dead)
-			break ;
+		pthread_mutex_lock(&phil->data->m_var);
+		if (now - phil->last_meal >= phil->data->life_time * 1000
+			&& !phil->is_eating)
+			dead = phil->name;
+		pthread_mutex_unlock(&phil->data->m_var);
 		phil = phil->right;
+		if (phil == head || dead)
+			break ;
 	}
-	pthread_mutex_lock(&(phil->data->m_print));
-	if (dead)
-		printf("%ld %d died\n", get_timestamp(phil->data->start / 1000), dead);
-	return (NULL);
+	return (dead);
 }
+
+void	unlock_all(t_philo *phil)
+{
+	t_philo	*head;
+
+	head = phil;
+	pthread_mutex_unlock(&(phil->data->m_var));
+	pthread_mutex_unlock(&(phil->data->m_die));
+	pthread_mutex_unlock(&(phil->data->m_print));
+	while (phil)
+	{
+		pthread_mutex_unlock(&(phil->l_fork->m_fork));
+		phil = phil->right;
+		if (phil == head)
+			break ;
+	}
+}
+
+void	monitor_status(t_philo *phil)
+{
+	int			dead;
+	long int	now;
+
+	dead = 0;
+	while (1)
+	{
+		now = get_utimestamp(phil->data->start);
+		dead = is_dead(phil, now);
+		if (dead || (phil->data->min_meals 
+			&& all_ate_enough(phil, phil->data->min_meals)))
+			break ;
+	}
+	set_int(&phil->data->end_sim, 1, &phil->data->m_die);
+	if (dead)
+	{
+		pthread_mutex_lock(&(phil->data->m_print));
+		printf("%ld %d died\n", get_timestamp(phil->data->start / 1000), dead);
+		pthread_mutex_unlock(&(phil->data->m_print));
+	}
+}
+
+// void	*monitor_status(void *param)
+// {
+// 	t_philo		*phil;
+// 	int			dead;
+// 	long int	now;
+
+// 	phil = (t_philo *)param;
+// 	dead = 0;
+// 	while (phil)
+// 	{
+// 		if (phil->name == 1)
+// 			now = get_utimestamp(phil->data->start);
+// 		if (phil->name == 1 && phil->data->min_meals && all_ate_enough(phil, \
+// 			phil->data->min_meals))
+// 			break ;
+// 		dead = is_dead(phil, now);
+// 		if (dead)
+// 			break ;
+// 		phil = phil->right;
+// 	}
+// 	pthread_mutex_lock(&(phil->data->m_print));
+// 	if (dead)
+// 		printf("%ld %d died\n", get_timestamp(phil->data->start / 1000), dead);
+// 	return (NULL);
+// }

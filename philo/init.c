@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:29:02 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/10 16:40:59 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/16 13:07:07 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,10 @@ t_data	*get_data(int argc, char **argv)
 	data->life_time = ft_atoi(argv[2]);
 	data->eat_time = ft_atoi(argv[3]);
 	data->sleep_time = ft_atoi(argv[4]);
-	data->all_ready = 0;
 	data->min_meals = 0;
+	data->start = 0;
+	data->all_ready = 0;
+	data->end_sim = 0;
 	if (argc == 6)
 		data->min_meals = ft_atoi(argv[5]);
 	return (data);
@@ -86,20 +88,24 @@ void	start_threads(t_philo **phil)
 	head = *phil;
 	pthread_mutex_init(&(head->data->m_print), NULL);
 	pthread_mutex_init(&(head->data->m_var), NULL);
-	while (*phil)
+	pthread_mutex_init(&(head->data->m_die), NULL);
+	while (head)
 	{
-		pthread_create(&(*phil)->id, NULL, live, (void *)*phil);
-		pthread_detach((*phil)->id);
-		if ((*phil)->right == head)
+		pthread_create(&head->id, NULL, live, (void *)head);
+		head = head->right;
+		if (head == *phil)
 			break ;
-		*phil = (*phil)->right;
 	}
-	*phil = head;
-	(*phil)->data->start = ft_timeofday();
-	set_int(&(*phil)->data->all_ready, 1, &(*phil)->data->m_var);
-	pthread_create(&(*phil)->data->death, NULL, monitor_status, (void *)*phil);
-	pthread_join((*phil)->data->death, NULL);
-	pthread_mutex_destroy(&(head->data->m_print));
-	pthread_mutex_destroy(&(head->data->m_var));
+	head->data->start = ft_timeofday();
+	set_int(&head->data->all_ready, 1, &head->data->m_var);
+	monitor_status(head);
+	while (head)
+	{
+		unlock_all(head);
+		pthread_join(head->id, NULL);
+		head = head->right;
+		if (head == *phil)
+			break ;
+	}
 	free_philo(phil);
 }

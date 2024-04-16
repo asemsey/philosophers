@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 11:15:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/10 15:55:34 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/16 14:55:39 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	live_odd(t_philo *phil, int n)
 		thinking(phil, phil->data->eat_time);
 	while (1)
 	{
+		if (get_int(&phil->data->end_sim, &phil->data->m_die))
+			return ;
 		if (phil->t_since_think == n / 2)
 		{
 			thinking(phil, phil->data->eat_time);
@@ -46,6 +48,8 @@ void	live_even(t_philo *phil)
 		thinking(phil, phil->data->eat_time);
 	while (1)
 	{
+		if (get_int(&phil->data->end_sim, &phil->data->m_die))
+			return ;
 		if (loop != 1 || phil->name % 2 != 0)
 			thinking(phil, 0);
 		eating(phil);

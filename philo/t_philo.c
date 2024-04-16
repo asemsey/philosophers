@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:35:16 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/10 16:23:44 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/16 12:22:04 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,15 @@ void	free_philo(t_philo **phil)
 	if (!phil || !*phil)
 		return ;
 	head = *phil;
+	pthread_mutex_destroy(&(head->data->m_print));
+	pthread_mutex_destroy(&(head->data->m_var));
+	pthread_mutex_destroy(&(head->data->m_die));
 	free((*phil)->data);
 	while (*phil)
 	{
 		tmp = *phil;
 		*phil = (*phil)->right;
+		pthread_mutex_destroy(&(tmp->l_fork->m_fork));
 		free(tmp->l_fork);
 		free(tmp);
 		if (*phil == head)
