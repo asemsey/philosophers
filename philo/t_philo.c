@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:35:16 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/16 12:22:04 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/18 11:07:10 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ t_philo	*new_philo(int name, t_data *data)
 	p->is_eating = 0;
 	p->t_since_think = 0;
 	p->meals = 0;
-	p->id = NULL;
 	return (p);
 }
 
@@ -80,29 +79,4 @@ t_philo	*highest(t_philo *phil)
 		phil = phil->right;
 	}
 	return (phil);
-}
-
-// free_all for circular list, with t_data and t_fork
-void	free_philo(t_philo **phil)
-{
-	t_philo	*tmp;
-	t_philo	*head;
-
-	if (!phil || !*phil)
-		return ;
-	head = *phil;
-	pthread_mutex_destroy(&(head->data->m_print));
-	pthread_mutex_destroy(&(head->data->m_var));
-	pthread_mutex_destroy(&(head->data->m_die));
-	free((*phil)->data);
-	while (*phil)
-	{
-		tmp = *phil;
-		*phil = (*phil)->right;
-		pthread_mutex_destroy(&(tmp->l_fork->m_fork));
-		free(tmp->l_fork);
-		free(tmp);
-		if (*phil == head)
-			break ;
-	}
 }

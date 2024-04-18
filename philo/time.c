@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 13:03:10 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/16 15:04:23 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/18 11:10:01 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,32 +44,33 @@ long int	get_utimestamp(long int ustart)
 	return (-1);
 }
 
-// pause for exactly us usec
-void	ft_usleep(long int us, int *end_sim, pthread_mutex_t *die)
+// pause for exactly ms msec
+void	ft_msleep(long int ms, int *end_sim, pthread_mutex_t *die)
 {
 	long int	start;
 	long int	remaining;
 
+	ms *= 1000;
 	start = ft_timeofday();
-	while (ft_timeofday() - start < us)
+	while (ft_timeofday() - start < ms)
 	{
 		if (get_int(end_sim, die))
 			return ;
-		remaining = us - (ft_timeofday() - start);
+		remaining = ms - (ft_timeofday() - start);
 		if (remaining > 10000)
 		{
 			if (get_int(end_sim, die))
 				return ;
-			usleep(remaining / 10);
+			usleep(remaining / 100);
 		}
 		else
-			while (ft_timeofday() - start < us)
+			while (ft_timeofday() - start < ms)
 				;
 	}
 }
 
 // pause for exactly ms msec
-void	ft_msleep(long int ms, int *end_sim, pthread_mutex_t *die)
-{
-	ft_usleep(ms * 1000, end_sim, die);
-}
+// void	ft_msleep(long int ms, int *end_sim, pthread_mutex_t *die)
+// {
+// 	ft_usleep(ms * 1000, end_sim, die);
+// }

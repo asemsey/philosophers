@@ -6,13 +6,13 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 19:23:39 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/16 12:16:12 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/18 11:02:24 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// create a fork with the given name
+// create a fork, init mutex
 t_fork	*new_fork(void)
 {
 	t_fork	*fork;
@@ -21,7 +21,6 @@ t_fork	*new_fork(void)
 	if (!fork)
 		return (NULL);
 	pthread_mutex_init(&(fork->m_fork), NULL);
-	// fork->name = name;
 	fork->locked = 0;
 	return (fork);
 }

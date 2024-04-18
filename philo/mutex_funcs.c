@@ -6,11 +6,12 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 13:47:17 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/16 15:04:39 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/18 11:04:50 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+// functions to access variables safely with mutexes
 
 int	get_int(int *var, pthread_mutex_t *mutex)
 {
@@ -22,15 +23,15 @@ int	get_int(int *var, pthread_mutex_t *mutex)
 	return (ret);
 }
 
-long int	get_long(long int *var, pthread_mutex_t *mutex)
-{
-	long int	ret;
+// long int	get_long(long int *var, pthread_mutex_t *mutex)
+// {
+// 	long int	ret;
 
-	pthread_mutex_lock(mutex);
-	ret = *var;
-	pthread_mutex_unlock(mutex);
-	return (ret);
-}
+// 	pthread_mutex_lock(mutex);
+// 	ret = *var;
+// 	pthread_mutex_unlock(mutex);
+// 	return (ret);
+// }
 
 void	set_int(int *var, int value, pthread_mutex_t *mutex)
 {

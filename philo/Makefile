@@ -1,6 +1,6 @@
 NAME = philo
 
-CFLAGS = -Wall -Wextra -Werror -lpthread
+CFLAGS = -Wall -Wextra -Werror -pthread -g
 
 SRC = main.c init.c t_philo.c t_fork.c time.c mutex_funcs.c \
 		survive.c sim_loop.c monitor.c

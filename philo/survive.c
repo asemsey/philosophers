@@ -6,11 +6,13 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:09:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/16 15:00:47 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/18 11:10:38 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	ft_status(t_philo *phil, int state);
 
 void	sleeping(t_philo *phil)
 {

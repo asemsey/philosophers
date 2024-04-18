@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:29:02 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/16 13:07:07 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/18 11:07:06 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,32 @@ t_data	*get_data(int argc, char **argv)
 	return (data);
 }
 
-// create, detach / join threads
+// free_all for circular list, with t_data and t_fork
+void	free_philo(t_philo **phil)
+{
+	t_philo	*tmp;
+	t_philo	*head;
+
+	if (!phil || !*phil)
+		return ;
+	head = *phil;
+	pthread_mutex_destroy(&(head->data->m_print));
+	pthread_mutex_destroy(&(head->data->m_var));
+	pthread_mutex_destroy(&(head->data->m_die));
+	free((*phil)->data);
+	while (*phil)
+	{
+		tmp = *phil;
+		*phil = (*phil)->right;
+		pthread_mutex_destroy(&(tmp->l_fork->m_fork));
+		free(tmp->l_fork);
+		free(tmp);
+		if (*phil == head)
+			break ;
+	}
+}
+
+// create and join threads
 void	start_threads(t_philo **phil)
 {
 	t_philo	*head;
@@ -101,7 +126,6 @@ void	start_threads(t_philo **phil)
 	monitor_status(head);
 	while (head)
 	{
-		unlock_all(head);
 		pthread_join(head->id, NULL);
 		head = head->right;
 		if (head == *phil)
