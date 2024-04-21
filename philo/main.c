@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:26:38 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/10 16:39:55 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/21 15:58:25 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,3 @@ int	main(int argc, char **argv)
 	start_threads(&phil);
 	return (EXIT_SUCCESS);
 }
-
-// ./philo 7 800 200 200 20 > output1.txt

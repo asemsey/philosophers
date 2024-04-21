@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 11:35:16 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/21 14:00:54 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/21 15:58:12 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ t_philo	*new_philo(int name, t_data *data)
 	p->data = data;
 	p->is_eating = 0;
 	p->t_since_think = 0;
+	p->last_meal = 0;
 	p->meals = 0;
-	p->id = NULL;
 	return (p);
 }
 

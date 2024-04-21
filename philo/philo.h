@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/21 14:36:17 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/21 15:51:50 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_data
 typedef struct s_fork
 {
 	pthread_mutex_t	m_fork;
+	int				name;
 	int				locked;
 }	t_fork;
 

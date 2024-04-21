@@ -6,11 +6,35 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:09:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/21 14:47:45 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/21 15:50:21 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	both_forks(t_fork *fork1, t_fork *fork2, int lock)
+{
+	if (lock && fork1->name < fork2->name)
+	{
+		pthread_mutex_lock(&fork1->m_fork);
+		pthread_mutex_lock(&fork2->m_fork);
+	}
+	else if (lock)
+	{
+		pthread_mutex_lock(&fork2->m_fork);
+		pthread_mutex_lock(&fork1->m_fork);
+	}
+	else if (!lock && fork1->name < fork2->name)
+	{
+		pthread_mutex_unlock(&fork1->m_fork);
+		pthread_mutex_unlock(&fork2->m_fork);
+	}
+	else if (!lock)
+	{
+		pthread_mutex_unlock(&fork2->m_fork);
+		pthread_mutex_unlock(&fork1->m_fork);
+	}
+}
 
 void	sleeping(t_philo *phil)
 {
@@ -35,12 +59,10 @@ void	eating(t_philo *phil)
 			&(phil->data->m_die));
 	if (get_int(&(phil->data->end_sim), &(phil->data->m_die)))
 		return ;
-	pthread_mutex_lock(&phil->l_fork->m_fork);
-	pthread_mutex_lock(&phil->r_fork->m_fork);
+	both_forks(phil->l_fork, phil->r_fork, 1);
 	phil->l_fork->locked = 0;
 	phil->r_fork->locked = 0;
-	pthread_mutex_unlock(&phil->l_fork->m_fork);
-	pthread_mutex_unlock(&phil->r_fork->m_fork);
+	both_forks(phil->l_fork, phil->r_fork, 0);
 	if (get_int(&(phil->data->end_sim), &(phil->data->m_die)))
 		return ;
 	pthread_mutex_lock(&phil->data->m_var);
@@ -60,19 +82,16 @@ void	thinking(t_philo *phil, int ms, int alone)
 	{
 		if (get_int(&(phil->data->end_sim), &(phil->data->m_die)))
 			return ;
-		pthread_mutex_lock(&phil->l_fork->m_fork);
-		pthread_mutex_lock(&phil->r_fork->m_fork);
+		both_forks(phil->l_fork, phil->r_fork, 1);
 		if (!phil->l_fork->locked && !phil->r_fork->locked)
 		{
 			phil->l_fork->locked = phil->name;
 			phil->r_fork->locked = phil->name;
-			pthread_mutex_unlock(&phil->l_fork->m_fork);
-			pthread_mutex_unlock(&phil->r_fork->m_fork);
+			both_forks(phil->l_fork, phil->r_fork, 0);
 			ft_status(phil, 2);
 			return ;
 		}
-		pthread_mutex_unlock(&phil->l_fork->m_fork);
-		pthread_mutex_unlock(&phil->r_fork->m_fork);
+		both_forks(phil->l_fork, phil->r_fork, 0);
 		usleep(50);
 	}
 }

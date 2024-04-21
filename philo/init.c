@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:29:02 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/21 14:19:47 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/21 15:57:45 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	init_mutexes(t_philo *phil)
 	}
 }
 
-// create, detach / join threads
+// create, join threads
 void	start_threads(t_philo **phil)
 {
 	t_philo	*head;
