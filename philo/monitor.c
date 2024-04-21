@@ -6,13 +6,12 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 11:15:52 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/18 11:00:22 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/21 14:47:09 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// if min_meals is set, checks if everyone has eaten min_meals
 int	all_ate_enough(t_philo *phil, int min)
 {
 	t_philo	*head;
@@ -39,11 +38,11 @@ int	is_dead(t_philo *phil, long int now)
 	dead = 0;
 	while (phil)
 	{
-		pthread_mutex_lock(&phil->data->m_var);
+		pthread_mutex_lock(&(phil->data->m_var));
 		if (now - phil->last_meal >= phil->data->life_time * 1000
 			&& !phil->is_eating)
 			dead = phil->name;
-		pthread_mutex_unlock(&phil->data->m_var);
+		pthread_mutex_unlock(&(phil->data->m_var));
 		phil = phil->right;
 		if (phil == head || dead)
 			break ;
@@ -66,7 +65,7 @@ void	monitor_status(t_philo *phil)
 			break ;
 		usleep(100);
 	}
-	set_int(&phil->data->end_sim, 1, &phil->data->m_die);
+	set_int(&(phil->data->end_sim), 1, &(phil->data->m_die));
 	if (dead)
 	{
 		pthread_mutex_lock(&(phil->data->m_print));

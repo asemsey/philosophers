@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 10:27:50 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/18 11:13:57 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/21 14:36:17 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ typedef struct s_philo	t_philo;
 // state: 0-sleep 1-eat 2-think
 struct s_philo
 {
-	int			name;
 	t_data		*data;
 	pthread_t	id;
+	int			name;
 	t_philo		*left;
 	t_philo		*right;
 	t_fork		*l_fork;
@@ -66,9 +66,10 @@ void		start_threads(t_philo **phil);
 
 void		*live(void *param);
 void		monitor_status(t_philo *phil);
-void		thinking(t_philo *phil, int ms);
+void		thinking(t_philo *phil, int ms, int alone);
 void		eating(t_philo *phil);
 void		sleeping(t_philo *phil);
+void		ft_status(t_philo *phil, int state);
 
 // struct funcs:
 
@@ -76,11 +77,13 @@ t_data		*get_data(int argc, char **argv);
 t_philo		*create_table(int count, t_data *data);
 t_philo		*highest(t_philo *phil);
 void		create_forks(t_philo **phil);
+void		free_philo(t_philo **phil);
 
 // utils
 
 int			ft_atoi(const char *str);
 int			get_int(int *var, pthread_mutex_t *mutex);
+long int	get_long(long int *var, pthread_mutex_t *mutex);
 void		set_int(int *var, int value, pthread_mutex_t *mutex);
 void		set_long(long int *var, long int value, pthread_mutex_t *mutex);
 void		increment_int(int *var, pthread_mutex_t *mutex);
@@ -88,6 +91,7 @@ void		increment_int(int *var, pthread_mutex_t *mutex);
 long int	ft_timeofday(void);
 long int	get_utimestamp(long int start);
 long int	get_timestamp(long int start);
-void		ft_msleep(long int ms, int *end_sim, pthread_mutex_t *die);
+void		ft_usleep(long int us, int *end, pthread_mutex_t *m_die);
+void		ft_msleep(long int ms, int *end, pthread_mutex_t *m_die);
 
 #endif

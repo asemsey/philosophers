@@ -6,7 +6,7 @@
 /*   By: asemsey <asemsey@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/28 15:29:02 by asemsey           #+#    #+#             */
-/*   Updated: 2024/04/18 11:07:06 by asemsey          ###   ########.fr       */
+/*   Updated: 2024/04/21 14:19:47 by asemsey          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,49 +71,38 @@ t_data	*get_data(int argc, char **argv)
 	data->life_time = ft_atoi(argv[2]);
 	data->eat_time = ft_atoi(argv[3]);
 	data->sleep_time = ft_atoi(argv[4]);
-	data->min_meals = 0;
-	data->start = 0;
 	data->all_ready = 0;
+	data->min_meals = 0;
 	data->end_sim = 0;
 	if (argc == 6)
 		data->min_meals = ft_atoi(argv[5]);
 	return (data);
 }
 
-// free_all for circular list, with t_data and t_fork
-void	free_philo(t_philo **phil)
+void	init_mutexes(t_philo *phil)
 {
-	t_philo	*tmp;
 	t_philo	*head;
 
-	if (!phil || !*phil)
-		return ;
-	head = *phil;
-	pthread_mutex_destroy(&(head->data->m_print));
-	pthread_mutex_destroy(&(head->data->m_var));
-	pthread_mutex_destroy(&(head->data->m_die));
-	free((*phil)->data);
-	while (*phil)
+	head = phil;
+	pthread_mutex_init(&(head->data->m_print), NULL);
+	pthread_mutex_init(&(head->data->m_var), NULL);
+	pthread_mutex_init(&(head->data->m_die), NULL);
+	while (phil)
 	{
-		tmp = *phil;
-		*phil = (*phil)->right;
-		pthread_mutex_destroy(&(tmp->l_fork->m_fork));
-		free(tmp->l_fork);
-		free(tmp);
-		if (*phil == head)
+		pthread_mutex_init(&(phil->l_fork->m_fork), NULL);
+		phil = phil->right;
+		if (phil == head)
 			break ;
 	}
 }
 
-// create and join threads
+// create, detach / join threads
 void	start_threads(t_philo **phil)
 {
 	t_philo	*head;
 
 	head = *phil;
-	pthread_mutex_init(&(head->data->m_print), NULL);
-	pthread_mutex_init(&(head->data->m_var), NULL);
-	pthread_mutex_init(&(head->data->m_die), NULL);
+	init_mutexes(head);
 	while (head)
 	{
 		pthread_create(&head->id, NULL, live, (void *)head);
@@ -122,7 +111,7 @@ void	start_threads(t_philo **phil)
 			break ;
 	}
 	head->data->start = ft_timeofday();
-	set_int(&head->data->all_ready, 1, &head->data->m_var);
+	set_int(&(head->data->all_ready), 1, &(head->data->m_var));
 	monitor_status(head);
 	while (head)
 	{
